@@ -1,0 +1,40 @@
+<h1>Transacções</h1>
+
+<input
+  type="search"
+  placeholder="Pesquisar por descrição ou referência"
+  [value]="search()"
+  (input)="onSearch($event)"
+/>
+@if (loading()) {
+  <p>A carregar...</p>
+} @else if (errorMessage()) {
+  <p role="alert">{{ errorMessage() }}</p>
+} @else {
+  <p>{{ total() }} resultado(s)</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Referência</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of transactions(); track t.id) {
+        <tr>
+          <td>{{ t.reference }}</td>
+          <td>{{ t.description }}</td>
+          <td>{{ t.amount | number: '1.2-2' }} {{ t.currency }}</td>
+          <td>{{ t.status }}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4">Sem resultados.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
